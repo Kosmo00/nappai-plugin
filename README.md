@@ -1,10 +1,11 @@
 # Plugin de NappAI para Claude Code
 
 Trae las cuatro skills con las que el asistente de NappAI construye flujos —planificar,
-investigar el catálogo, construir y arreglar— y declara el MCP de la plataforma, que es lo que
-convierte esas instrucciones en cambios reales sobre un lienzo.
+investigar el catálogo, construir y arreglar— y los comandos para conectar el MCP de la
+plataforma, que es lo que convierte esas instrucciones en cambios reales sobre un lienzo.
 
-Sólo para **Claude Code**. Ni el manifest ni el `.mcp.json` son portables a otros clientes.
+Sólo para **Claude Code**: los comandos usan `claude mcp add` para registrar el servidor, que no
+es portable a otros clientes.
 
 ## Instalar
 
