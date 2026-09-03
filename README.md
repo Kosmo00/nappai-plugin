@@ -8,10 +8,10 @@ Sólo para **Claude Code**. Ni el manifest ni el `.mcp.json` son portables a otr
 
 ## Instalar
 
-Dos vías. La primera, desde el repositorio del plugin:
+Dos vías. La primera, desde el repositorio del plugin en GitHub:
 
 ```sh
-claude plugin marketplace add <owner>/<repo del plugin>
+claude plugin marketplace add Kosmo00/nappai-plugin
 claude plugin install nappai@napptilus
 ```
 
