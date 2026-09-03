@@ -1,12 +1,12 @@
 {
-  "description": "Avisa al arrancar si faltan las variables sin las que el MCP de NappAI no conecta.",
+  "description": "Warns at startup when the NappAI MCP server is not registered.",
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/comprueba-entorno.sh\"",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/check-setup.sh\"",
             "timeout": 10
           }
         ]

@@ -27,43 +27,58 @@ segunda repitiendo el `curl`.
 
 ## Poner en marcha
 
-Un comando, y la API key no se escribe en el chat.
+**Un comando, con la API key pegada dentro.** Es la forma principal y no necesita nada más:
 
-**1. Deja la key en un fichero que sólo puedas leer tú:**
+```sh
+claude mcp add --scope user --transport http nappai \
+  https://<host>/flow-editor-mcp/mcp \
+  --header "Authorization: Bearer PEGA_TU_API_KEY"
+```
+
+Sustituye `<host>` por el de tu despliegue (en desarrollo, `http://localhost:5163`) y
+`PEGA_TU_API_KEY` por tu API key **de plataforma** — la misma con la que se llaman los flujos
+por API, no un token de sesión. Después **reabre Claude Code** y comprueba con `/nappai:status`.
+
+La credencial queda en tu configuración de usuario (`~/.claude.json`, permisos 600). No hay
+variables de entorno de por medio, y volver a ejecutar el comando **reemplaza** el registro: es
+también la forma de actualizar una key rotada.
+
+> Al pegar la key en la consola queda en el historial del shell. Para evitarlo, escribe la línea
+> empezando con un espacio (con `HISTCONTROL=ignorespace` en bash o `setopt HIST_IGNORE_SPACE`
+> en zsh), o bórrala después con `history -d <número>`.
+
+### Si prefieres que el plugin lo haga
+
+Hace el mismo `claude mcp add`, y además comprueba la key contra el servidor **antes** de
+guardarla, así que una key equivocada da un mensaje claro en vez de un servidor que falla en
+cada turno:
 
 ```sh
 mkdir -p ~/.nappai
-printf '%s' 'TU_API_KEY' > ~/.nappai/api-key
+printf '%s' 'PEGA_TU_API_KEY' > ~/.nappai/api-key
 chmod 600 ~/.nappai/api-key
 ```
 
-Es tu API key de **plataforma**: la misma con la que se llaman los flujos por API, no un token
-de sesión.
-
-**2. Conecta:**
+y dentro de Claude Code:
 
 ```
-/nappai:conectar https://<host>/flow-editor-mcp/mcp
+/nappai:connect https://<host>/flow-editor-mcp/mcp
 ```
 
-El comando comprueba que la credencial funciona contra ese servidor y sólo entonces la registra
-en la configuración de usuario de Claude Code (`~/.claude.json`, permisos 600). No hay que
-exportar ninguna variable de entorno, y la key no pasa por la conversación: lo que se teclea en
-el chat queda en la transcripción y viaja al modelo en cada turno.
+El `printf` en vez de `echo` es a propósito: con `echo` el fichero se queda con un salto de
+línea al final, y la cabecera saldría con ese salto dentro, lo que da un 401 que no se parece en nada a la
+causa.
 
-**3. Reabre Claude Code** y comprueba:
-
-```
-/nappai:estado
-```
+**No escribas la key en el chat**: lo que se teclea ahí queda en la transcripción de la
+conversación y viaja al modelo en cada turno.
 
 ## Los comandos
 
 | Comando | Qué hace |
 |---|---|
-| `/nappai:conectar [url]` | Registra el MCP con tu API key. Volver a ejecutarlo **actualiza** la credencial (es lo que se hace al rotarla), no duplica el servidor |
-| `/nappai:estado` | Si el plugin está cargado, si el servidor está registrado, si contesta y de dónde sale la credencial. Las cabeceras salen tapadas |
-| `/nappai:desconectar` | Retira el servidor. No borra el fichero de la key |
+| `/nappai:connect [url]` | Registra el MCP con tu API key, validándola antes. Repetirlo **actualiza** la credencial, no duplica el servidor |
+| `/nappai:status` | Si el plugin está cargado, si el servidor está registrado, si contesta y de dónde sale la credencial. Las cabeceras salen tapadas |
+| `/nappai:disconnect` | Retira el servidor (`claude mcp remove nappai --scope user`). No borra el fichero de la key |
 
 ## Qué hace cada skill
 
@@ -79,8 +94,10 @@ Se cargan solas cuando hacen falta; no hay que invocarlas.
 ## Desinstalar
 
 ```sh
-claude plugin uninstall nappai@napptilus   # si vino del marketplace
-rm -rf ~/.claude/skills/nappai             # si vino del tar
+claude mcp remove nappai --scope user      # el servidor
+claude plugin uninstall nappai@napptilus   # el plugin, si vino del marketplace
+rm -rf ~/.claude/skills/nappai             # el plugin, si vino del tar
+rm ~/.nappai/api-key                       # la key, si la dejaste en el fichero
 ```
 
 ---
@@ -95,6 +112,7 @@ Este directorio es la FUENTE. Lo que hay aquí:
 | `commands/` | Los `/nappai:*` que ve la persona |
 | `scripts/` | Lo que ejecutan. La lógica vive aquí, para que se pueda probar sin un modelo delante |
 | `hooks/` | El aviso de arranque cuando el MCP no está registrado |
+| | *La superficie de cara al usuario —comandos, mensajes de los scripts— está en inglés; los comentarios de mantenimiento, en español, como el resto del repositorio* |
 | `mcp.ejemplo.json` | **Plantilla, no se empaqueta.** Para Claude Desktop/Cowork, donde el MCP no se registra con `claude mcp add` sino por configuración gestionada (headers, headersHelper u OAuth) |
 | `README.md` | Esto, que viaja dentro del paquete |
 | `sincroniza.py` | Publica el plugin en su repositorio de distribución |
