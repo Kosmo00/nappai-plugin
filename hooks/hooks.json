@@ -1,0 +1,16 @@
+{
+  "description": "Avisa al arrancar si faltan las variables sin las que el MCP de NappAI no conecta.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/comprueba-entorno.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

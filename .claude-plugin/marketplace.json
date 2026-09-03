@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "napptilus",
+  "description": "Los plugins de NappAI para Claude Code.",
+  "owner": {
+    "name": "Napptilus"
+  },
+  "plugins": [
+    {
+      "name": "nappai",
+      "description": "Construir flujos NappAI desde Claude Code: las cuatro skills del asistente y los comandos para conectar el MCP de la plataforma.",
+      "source": "./",
+      "category": "development",
+      "version": "0.1.0"
+    }
+  ]
+}

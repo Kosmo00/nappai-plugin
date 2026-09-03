@@ -1,0 +1,12 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "nappai",
+  "version": "0.1.0",
+  "description": "Construir flujos NappAI desde Claude Code: las cuatro skills del asistente y los comandos para conectar el MCP de la plataforma.",
+  "author": {
+    "name": "Napptilus"
+  },
+  "skills": [
+    "./skills"
+  ]
+}
