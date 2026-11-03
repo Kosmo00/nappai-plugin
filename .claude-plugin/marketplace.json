@@ -10,8 +10,8 @@
       "name": "nappai",
       "description": "Construir flujos NappAI desde Claude Code: las skills del asistente y los comandos para conectar el MCP de la plataforma.",
       "source": {
-        "source": "github",
-        "repo": "nappai-dev/nappai-plugin"
+        "source": "url",
+        "url": "https://github.com/nappai-dev/nappai-plugin.git"
       },
       "category": "development"
     }
